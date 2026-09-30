@@ -1,20 +1,15 @@
-// const express = require('express');
-// const app = express();
-// const path = require('path');
-// const filepath = path.join(__dirname, "./data.json");
-
-// app.get('/products', (req, res) => {
-//     const data = fs.readFileSync(filepath, 'utf-8');
-//     console.log(data)
-// });
-
-// app.listen(3000, () => {
-//     console.log("Server is running on port 3000");
-// });
-
 const express = require('express');
+const fs = require('fs/promises');
+const path = require('path');
 const app = express();
 const port = 3000;
+
+const pathToFile = path.join(__dirname, 'data.json');
+
+async function readData(){
+    let data = await fs.readFile(pathToFile,'utf-8');
+    return JSON.parse(data);
+}
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
