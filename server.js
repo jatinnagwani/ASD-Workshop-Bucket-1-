@@ -4,7 +4,7 @@ const path = require('path');
 
 const app = express();
 const port = 3000;
-
+const cache={}
 const pathToFile = path.join(__dirname, 'data.json');
 
 async function readData() {
@@ -28,7 +28,13 @@ async function readFileWithDelay(){
 
 app.get('/products', async (req, res) => {
     try {
+        let key = req.url;
+        let value= cache[key];
+        if(value){
+            return res.json(value); 
+        }
         let products = await readFileWithDelay();
+        cache[key]= products;
         res.json(products);
     } catch (err) {
         console.log(err);
