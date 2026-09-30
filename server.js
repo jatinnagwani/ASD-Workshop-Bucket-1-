@@ -44,12 +44,23 @@ app.get('/products', async (req, res) => {
 
 app.get('/products/:id', async (req, res) => {
     try {
-        let products = await readData();
+        let key = req.url;
+        let value = cache[key];
+
+        if (value) {
+            return res.json(value);
+        }
+
+        let products = await readFileWithDelay();
         let { id } = req.params;
 
         id = Number(id);
 
-        let product = products.find((item)=>{return item.id===id});
+        let product = products.find((item) => {
+            return item.id === id;
+        });
+
+        cache[key] = product;
 
         res.json(product);
 
