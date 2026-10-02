@@ -1,8 +1,10 @@
 const express = require('express');
 const fs = require('fs/promises');
 const path = require('path');
+const productRoutes = require('./routes/productRoutes');
 
 const app = express();
+app.use(productRoutes);
 const port = 3000;
 const cache={}
 const pathToFile = path.join(__dirname, 'data.json');
