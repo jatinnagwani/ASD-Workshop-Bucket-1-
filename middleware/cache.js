@@ -1,5 +1,11 @@
 const cache = {};
-const TTL = 60 * 1000;
+const TTL = 60 * 1000; // 1 minute
+
+function clearCache() {
+    Object.keys(cache).forEach(key => {
+        delete cache[key];
+    });
+}
 
 function cacheMiddleware(req, res, next) {
     const key = req.originalUrl;
@@ -13,11 +19,13 @@ function cacheMiddleware(req, res, next) {
             return res.json(cached.data);
         }
 
+        // Expired, remove it
         delete cache[key];
     }
 
     res.set('X-Cache', 'MISS');
 
+    // Intercept res.json to store the response in cache
     const originalJson = res.json.bind(res);
 
     res.json = (data) => {
@@ -34,5 +42,6 @@ function cacheMiddleware(req, res, next) {
 
 module.exports = {
     cache,
-    cacheMiddleware
+    cacheMiddleware,
+    clearCache
 };

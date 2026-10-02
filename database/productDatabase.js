@@ -12,4 +12,8 @@ async function readData() {
     }
 }
 
-module.exports = { readData };
+async function writeData(data) {
+    await fs.writeFile(pathToFile, JSON.stringify(data, null, 2));
+}
+
+module.exports = { readData, writeData };
