@@ -5,15 +5,25 @@ const pathToFile = path.join(__dirname, '..', 'data.json');
 
 async function readData() {
     try {
-        let data = await fs.readFile(pathToFile, 'utf-8');
-        return JSON.parse(data);
+        const data = await fs.readFile(pathToFile, 'utf-8');
+        const products = JSON.parse(data);
+
+        if (!Array.isArray(products)) {
+            throw new Error('Invalid database format');
+        }
+
+        return products;
     } catch (err) {
-        console.log(err);
+        throw new Error(`Failed to read product data: ${err.message}`);
     }
 }
 
 async function writeData(data) {
-    await fs.writeFile(pathToFile, JSON.stringify(data, null, 2));
+    try {
+        await fs.writeFile(pathToFile, JSON.stringify(data, null, 2));
+    } catch (err) {
+        throw new Error(`Failed to write product data: ${err.message}`);
+    }
 }
 
 module.exports = { readData, writeData };

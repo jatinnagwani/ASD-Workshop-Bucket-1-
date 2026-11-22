@@ -19,6 +19,9 @@
     "name": "Mouse",
     "price": 19
   },
-  null,
-  null
+  {
+    "id": 5,
+    "name": "Headphones",
+    "price": 79.99
+  }
 ]
